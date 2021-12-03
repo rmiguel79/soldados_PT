@@ -70,6 +70,11 @@ vals=((
 	(3, 32667.),
 	(4, 43184.),
 	(5, 61786.),
+	),(
+	(1, 11177.),
+	(2, 22491.),
+	(3, 36356.),
+	(4, 54099.),
 	))
 
 if __name__ == '__main__':
@@ -118,8 +123,9 @@ if __name__ == '__main__':
 			if float(b) > lim_sem:
 				break
 			prv_a,prv_b = a,b
-		inst_meta = vals[-1][-1][0] + (lim_sem - prv_b) / (b - prv_b)
-		dias = '2a 3a 4a 5a 6a sábado domingo'.split()
+		inst_meta = (a-1) + (lim_sem - prv_b) / (b - prv_b)
+		dias = 'na_2a_feira na_3a_feira na_4a_feira na_5a_feira na_6a_feira no_sábado no_domingo'.split()
+		dias = [c.replace('_',' ') for c in dias]
 		dia_idx = int(inst_meta)
 		horas = ((inst_meta - dia_idx) * 24.) + 9.
 		if horas >= 24.:
@@ -127,7 +133,7 @@ if __name__ == '__main__':
 			dia_idx += 1
 	
 	s = f'''\
-	Hoje prevemos alcançar {projs[0]:.0f} ({int(projs[-1])*100./lim_sem:.0f}% da linha mínima) e chegar à meta ao dia {inst_meta:.1f},{dias[dia_idx]} pelas {horas:.0f}h
+	Hoje prevemos alcançar {projs[0]:.0f} ({int(projs[-1])*100./lim_sem:.0f}% da linha mínima) e chegar à meta {dias[dia_idx]} pelas {horas:.0f}h
 	Info pa novos membros,temos canal d discord
 	{discord}'''.replace('\n\t', '\n').strip()
 	print(f'\n{len(s)}')
