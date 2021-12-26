@@ -4,7 +4,7 @@ discord_old='https://discord.gg/dHWfrDBnmG'
 discord='https://discord.gg/kbA3F8qssg'
 discord='discord.gg/kbA3F8qssg'
 whatsapp='chat.whatsapp.com/BwFpogIrlca6VBSkDYePga'
-lim_sem =65000.
+lim_sem =60000.
 bonus=(0., 0.2, 0.4, 0.6, 1., 3., 5.)
 pesos=[1.+a for a in bonus]
 
@@ -80,6 +80,10 @@ vals=((
 	(2, 23729.),
 	(3, 38318.),
 	(4, 54432.),
+	),(
+	(1, 13276.),
+	(2, 27466.),
+	(3, 43388.),
 	))
 
 if __name__ == '__main__':

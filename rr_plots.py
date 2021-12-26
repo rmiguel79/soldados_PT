@@ -14,6 +14,7 @@ from rr_projecoes import pesos, vals
 lims = [20, 30, 65, 92, 65, 92]
 for _ in range(len(lims), len(vals)):
 	lims.append(65)
+lims[-1] = 60
 
 data = []
 velocidades_ys = []
@@ -111,13 +112,67 @@ fig = dict(data=data, layout=layout)
 hdr = '''<!DOCTYPE html>
   <html>
   <head>
-    <meta charset="utf-8"/>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <meta content="text/html; charset=utf-8" />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"> </script>
+    <style>
+      table {
+        border-collapse: collapse;
+        font-family: Tahoma, Geneva, sans-serif;
+        }
+      table td {
+        padding: 15px;
+        }
+      table thead td {
+        background-color: #54585d;
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 13px;
+        border: 1px solid #54585d;
+        }
+      table tbody td {
+        color: #636363;
+        border: 1px solid #dddfe1;
+        text-align: right;
+        }
+      table tbody tr {
+        background-color: #f9fafb;
+        }
+      table tbody tr:nth-child(odd) {
+        background-color: #ffffff;
+        }
+      </style>
     </head>
-  <body>
+  <body style="font:16px Verdana,Arial; margin:25px; background:#fff">
     '''.replace('\n  ', '\n')
 
-ftr = '''
+fld_hdr = '''\
+  <details style="margin-left:18px"> <summary>%s</summary>
+    <div style="margin-left:34px">
+'''
+
+tbl_hdr = '''\
+      <br />
+      <table>
+        <thead>
+          <tr> <td>Semana</td> <td>2a(3a)</td> <td>3a(4a)</td> <td>4a(5a)</td> <td>5a(6a)</td> <td>6a(sab)</td> <td>sab(dom)</td> <td>dom(2a)</td> </tr>
+          </thead>
+        <tbody>
+'''
+
+tbl_tpl = '          <tr> <td>{}</td> <td>{}</td> <td>{}</td> <td>{}</td> <td>{}</td> <td>{}</td> <td>{}</td> <td>{}</td> </tr>\n'
+
+tbl_ftr = '''\
+          </tbody>
+        </table>
+      <br />
+'''
+
+fld_ftr = '''\
+      </div>
+    </details>
+'''
+
+ftr = '''\
     </body>
   </html>
   '''.replace('\n  ', '\n')
@@ -130,5 +185,49 @@ my_div = plot(fig, include_plotlyjs=False, output_type='div')
 with open('rr_plots.html', 'w') as fw:
 	fw.write(hdr)
 	fw.write(my_div)
-	fw.write(ftr)
+	fw.write('\n  <br />\n  Clique nas linhas abaixo para aceder às tabelas com os valores:\n')
+	
+	fw.write(fld_hdr % 'Valores de RR diários')
+	fw.write(tbl_hdr)
+	velocidades_ys = []
+	for n,(semana, lim) in enumerate(zip(vals, lims)):
+		ys = [str(n+1)]
+		veloc_ys = [str(n+1)]
+		prv = 0.
+		for a,b in zip(semana, pesos):
+			ys.append('%d' % a[1])
+			veloc_ys.append('%d' % ((a[1]-prv) / b))
+			prv = a[1]
+		ys.append(str(lim*1000))
+		for a in range(len(ys)-1, 7):
+			ys.append('-')
+		for a in range(len(veloc_ys)-1, 7):
+			veloc_ys.append('-')
+		fw.write(tbl_tpl.format(*ys))
+		velocidades_ys.append(veloc_ys)
+	fw.write(tbl_ftr)
+	fw.write(fld_ftr)
+	
+	fw.write(fld_hdr % 'Velocidades excluindo bónus diários (ignorando o último dia)')
+	fw.write(tbl_hdr)
+	for veloc_ys in velocidades_ys:
+		fw.write(tbl_tpl.format(*veloc_ys))
+	fw.write(tbl_ftr)
+	fw.write(fld_ftr)
+	
+	fw.write(fld_hdr % 'Velocidades médias semanais excluindo bónus diários')
+	fw.write('''\
+      <br />
+      <table>
+        <thead>
+          <tr> <td>Semana</td> <td>Velocidade média</td> </tr>
+          </thead>
+        <tbody>
+''')
+	for n,m in enumerate(medias_semanais):
+		fw.write('          <tr> <td>{}</td> <td>{}</td> </tr>\n'.format(n+1, int(m)))
+	fw.write(tbl_ftr)
+	fw.write(fld_ftr)
+	
+	fw.write(ftr)                  
 print('rr_plots.html escrito.')
