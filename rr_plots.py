@@ -5,16 +5,20 @@ para se poder comparar efetivamente o "quanto se vence e participa" diariamente 
 dias e semanas diferentes.
 '''
 from plotly.offline import plot
+import codecs
 import numpy as np
 import plotly.graph_objs as go
 
 from rr_projecoes import pesos, vals
 
-# Objetivo definido para cada semana.
-lims = [20, 30, 65, 92, 65, 92]
-for _ in range(len(lims), len(vals)):
-	lims.append(65)
-lims[-1] = 60
+# # Objetivo definido para cada semana.
+# lims = [20, 30, 65, 92, 65, 92]
+# for _ in range(len(lims), len(vals)):
+# 	lims.append(65)
+# lims[-3] = 60
+# lims[-2] = 60
+# lims[-1] = 60
+lims = [20, 30, 65, 92, 65, 92, 65, 65, 65, 65, 65, 65, 60, 60, 60]
 
 data = []
 velocidades_ys = []
@@ -182,12 +186,12 @@ my_div = plot(fig, include_plotlyjs=False, output_type='div')
 # my_div = my_div.replace(', {"linkText": "Export to plot.ly", "showLink": true}', '')
 # my_div = my_div.replace('style="height: 100%; width: 100%;"', 'style="height: 750px; width: 1500px;"')
 
-with open('rr_plots.html', 'w') as fw:
+with open('rr_plots.html', 'w', encoding='utf-8') as fw:
 	fw.write(hdr)
 	fw.write(my_div)
 	fw.write('\n  <br />\n  Clique nas linhas abaixo para aceder às tabelas com os valores:\n')
 	
-	fw.write(fld_hdr % 'Valores de RR diários')
+	fw.write(fld_hdr % 'Valores de RR diários acumulados')
 	fw.write(tbl_hdr)
 	velocidades_ys = []
 	for n,(semana, lim) in enumerate(zip(vals, lims)):
