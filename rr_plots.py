@@ -18,7 +18,7 @@ from rr_projecoes import pesos, vals
 # lims[-3] = 60
 # lims[-2] = 60
 # lims[-1] = 60
-lims = [20, 30, 65, 92, 65, 92, 65, 65, 65, 65, 65, 65, 60, 60, 60]
+lims = [20, 30, 65, 92, 65, 92, 65, 65, 65, 65, 65, 65, 60, 60, 60, 60, 60]
 
 data = []
 velocidades_ys = []
