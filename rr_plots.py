@@ -18,7 +18,7 @@ from rr_projecoes import pesos, vals
 # lims[-3] = 60
 # lims[-2] = 60
 # lims[-1] = 60
-lims = [20, 30, 65, 92, 65, 92, 65, 65, 65, 65, 65, 65, 60, 60, 60, 60, 60]
+lims = [20, 30, 65, 92, 65, 92, 65, 65, 65, 65, 65, 65, 60, 60, 60, 60, 60, 60, 60]
 
 data = []
 velocidades_ys = []
@@ -50,7 +50,7 @@ for n,(semana,lim) in enumerate(zip(vals, lims)):
 	  name=f'RR na semana {n+1}',
 	  text=(f'RR na semana {n+1}',),
 	  hoverinfo='text',
-	  visible=True,
+	  visible=False,
 	  ))
 	
 	# Velocidade diária, descartando bónus diários.
@@ -76,7 +76,7 @@ data.append(go.Scatter(
   name=f'Evolução veloc.',
   text=(f'Evolução veloc.',),
   hoverinfo='text',
-  visible=False,
+  visible=True,
   ))
 
 layout = dict(
@@ -88,20 +88,20 @@ layout = dict(
     bordercolor='#BEC8D9',
     buttons=[
       dict(
-        args=[dict(visible=sum([[True,False] for _ in vals], []) + [False])],
-        label='RR acumulados',
-        method='update',),
-      dict(
-        args=[dict(visible=sum([[False,True] for _ in vals], []) + [False])],
-        label='Velocidades diárias',
+        args=[dict(visible=sum([[False,False] for _ in vals], []) + [True])],
+        label='Evolução do clã',
         method='update',),
       dict(
         args=[dict(visible=sum([[False,True] for _ in vals], []) + [True])],
         label='Veloc.+evolução',
         method='update',),
       dict(
-        args=[dict(visible=sum([[False,False] for _ in vals], []) + [True])],
-        label='Evolução do clã',
+        args=[dict(visible=sum([[False,True] for _ in vals], []) + [False])],
+        label='Velocidades diárias',
+        method='update',),
+      dict(
+        args=[dict(visible=sum([[True,False] for _ in vals], []) + [False])],
+        label='RR acumulados',
         method='update',),
       ],
     direction='down',
