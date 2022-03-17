@@ -11,14 +11,10 @@ import plotly.graph_objs as go
 
 from rr_projecoes import pesos, vals
 
-# # Objetivo definido para cada semana.
-# lims = [20, 30, 65, 92, 65, 92]
-# for _ in range(len(lims), len(vals)):
-# 	lims.append(65)
-# lims[-3] = 60
-# lims[-2] = 60
-# lims[-1] = 60
-lims = [20, 30, 65, 92, 65, 92, 65, 65, 65, 65, 65, 65, 60, 60, 60, 60, 60, 60, 60, 60]
+# Objetivo definido para cada semana.
+lims = [20, 30, 65, 92, 65, 92, 65, 65, 65, 65, 65, 65]
+for _ in range(len(lims), len(vals)):
+	lims.append(60)
 
 data = []
 velocidades_ys = []
@@ -144,6 +140,13 @@ hdr = '''<!DOCTYPE html>
       table tbody tr:nth-child(odd) {
         background-color: #ffffff;
         }
+      table tfoot td {
+        background-color: #54585d;
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 13px;
+        border: 1px solid #54585d;
+        }
       </style>
     </head>
   <body style="font:16px Verdana,Arial; margin:25px; background:#fff">
@@ -166,6 +169,29 @@ tbl_hdr = '''\
 tbl_tpl = '          <tr> <td>{}</td> <td>{}</td> <td>{}</td> <td>{}</td> <td>{}</td> <td>{}</td> <td>{}</td> <td>{}</td> </tr>\n'
 
 tbl_ftr = '''\
+        <tfoot>
+          <tr> <td>Semana</td> <td>2a(3a)</td> <td>3a(4a)</td> <td>4a(5a)</td> <td>5a(6a)</td> <td>6a(sab)</td> <td>sab(dom)</td> <td>dom(2a)</td> </tr>
+          </tfoot>
+          </tbody>
+        </table>
+      <br />
+'''
+
+tbl2_hdr = '''\
+      <br />
+      <table>
+        <thead>
+          <tr> <td>Semana</td> <td>Velocidade média</td> </tr>
+          </thead>
+        <tbody>
+'''
+
+tbl2_tpl = '          <tr> <td>{}</td> <td>{}</td> </tr>\n'
+
+tbl2_ftr = '''\
+        <tfoot>
+          <tr> <td>Semana</td> <td>Velocidade média</td> </tr>
+          </tfoot>
           </tbody>
         </table>
       <br />
@@ -220,17 +246,10 @@ with open('rr_plots.html', 'w', encoding='utf-8') as fw:
 	fw.write(fld_ftr)
 	
 	fw.write(fld_hdr % 'Velocidades médias semanais excluindo bónus diários')
-	fw.write('''\
-      <br />
-      <table>
-        <thead>
-          <tr> <td>Semana</td> <td>Velocidade média</td> </tr>
-          </thead>
-        <tbody>
-''')
+	fw.write(tbl2_hdr)
 	for n,m in enumerate(medias_semanais):
-		fw.write('          <tr> <td>{}</td> <td>{}</td> </tr>\n'.format(n+1, int(m)))
-	fw.write(tbl_ftr)
+		fw.write(tbl2_tpl.format(n+1, int(m)))
+	fw.write(tbl2_ftr)
 	fw.write(fld_ftr)
 	
 	fw.write(ftr)                  
